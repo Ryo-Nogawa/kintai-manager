@@ -11,7 +11,7 @@ import lombok.RequiredArgsConstructor;
 
 @Controller
 @RequiredArgsConstructor
-@RequestMapping("/kintai-manager/attendance")
+@RequestMapping("/kintai_manager/attendance")
 public class AttendanceController {
 
     private final RegistService registService;
