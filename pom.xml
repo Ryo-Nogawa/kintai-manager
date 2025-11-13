@@ -9,7 +9,7 @@
 		<relativePath/> <!-- lookup parent from repository -->
 	</parent>
 	<groupId>com.kintai</groupId>
-	<artifactId>kintai-manager</artifactId>
+	<artifactId>kintai_manager</artifactId>
 	<version>0.0.1-SNAPSHOT</version>
 	<name>KintaiManager</name>
 	<description>Demo project for Spring Boot</description>
