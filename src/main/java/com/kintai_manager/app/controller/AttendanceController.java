@@ -24,4 +24,13 @@ public class AttendanceController {
         model.addAttribute("attendance", "勤務開始");
         return "attendance-done";
     }
+
+    // 勤務終了リクエスト
+    @PostMapping("/end")
+    public String endAttendance(Model model) {
+        // 終了時間を登録
+        registService.registAttendance("12345", "WORK_END");
+        model.addAttribute("attendance", "勤務終了");
+        return "attendance-done";
+    }
 }
