@@ -17,8 +17,8 @@ public class AttendanceController {
     private final RegistService registService;
 
     // 勤務開始リクエスト
-    @PostMapping("/start")
-    public String startAttendance(Model model) {
+    @PostMapping("/work/start")
+    public String startWork(Model model) {
         // 開始時間を登録
         registService.registAttendance("12345", "WORK_START");
         model.addAttribute("attendance", "勤務開始");
