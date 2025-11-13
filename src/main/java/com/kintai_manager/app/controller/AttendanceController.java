@@ -33,4 +33,13 @@ public class AttendanceController {
         model.addAttribute("attendance", "勤務終了");
         return "attendance-done";
     }
+
+    // 休憩開始リクエスト
+    @PostMapping("/break/start")
+    public String startBreak(Model model) {
+        // 休憩開始時間を登録
+        registService.registAttendance("12345", "BREAK_START");
+        model.addAttribute("attendance", "休憩開始");
+        return "attendance-done";
+    }
 }
