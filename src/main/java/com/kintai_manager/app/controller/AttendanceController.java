@@ -22,7 +22,7 @@ public class AttendanceController {
     public String startWork(Model model) {
         // 開始時間を登録
         TimeEvent timeEvent = new TimeEvent();
-        timeEvent.setEmployeeId("12345");
+        timeEvent.setEmployeeId("00000");
         timeEvent.setEventType("WORK_START");
         registService.registAttendance(timeEvent);
 
@@ -35,7 +35,7 @@ public class AttendanceController {
     public String endWork(Model model) {
         // 終了時間を登録
         TimeEvent timeEvent = new TimeEvent();
-        timeEvent.setEmployeeId("12345");
+        timeEvent.setEmployeeId("00000");
         timeEvent.setEventType("WORK_END");
         registService.registAttendance(timeEvent);
 
@@ -48,7 +48,7 @@ public class AttendanceController {
     public String startBreak(Model model) {
         // 休憩開始時間を登録
         TimeEvent timeEvent = new TimeEvent();
-        timeEvent.setEmployeeId("12345");
+        timeEvent.setEmployeeId("00000");
         timeEvent.setEventType("BREAK_START");
         registService.registAttendance(timeEvent);
 
@@ -61,7 +61,7 @@ public class AttendanceController {
     public String endBreak(Model model) {
         // 休憩終了時間を登録
         TimeEvent timeEvent = new TimeEvent();
-        timeEvent.setEmployeeId("12345");
+        timeEvent.setEmployeeId("00000");
         timeEvent.setEventType("BREAK_END");
         registService.registAttendance(timeEvent);
 
