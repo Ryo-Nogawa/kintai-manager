@@ -9,11 +9,12 @@ import io.github.cdimascio.dotenv.Dotenv;
 public class KintaiManagerApplication {
 
 	public static void main(String[] args) {
-		// Load .env file
-		Dotenv dotenv = Dotenv.configure().filename("local.env").ignoreIfMissing().load();
+		// 環境変数を読み込む
+		Dotenv env = Dotenv.configure().filename("local.env").ignoreIfMissing().load();
 
-		// Set as system env properties
-		dotenv.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+		// 読み込んだ環境変数をシステムプロパティに設定する
+		env.entries().forEach(entry -> System.setProperty(entry.getKey(), entry.getValue()));
+
 		SpringApplication.run(KintaiManagerApplication.class, args);
 	}
 
