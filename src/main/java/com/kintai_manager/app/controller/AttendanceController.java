@@ -5,6 +5,7 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.kintai_manager.app.entity.TimeEvent;
 import com.kintai_manager.app.service.RegistService;
 
 import lombok.RequiredArgsConstructor;
@@ -20,7 +21,11 @@ public class AttendanceController {
     @PostMapping("/work/start")
     public String startWork(Model model) {
         // 開始時間を登録
-        registService.registAttendance("12345", "WORK_START");
+        TimeEvent timeEvent = new TimeEvent();
+        timeEvent.setEmployeeId("12345");
+        timeEvent.setEventType("WORK_START");
+        registService.registAttendance(timeEvent);
+
         model.addAttribute("attendance", "勤務開始");
         return "attendance-done";
     }
@@ -29,7 +34,11 @@ public class AttendanceController {
     @PostMapping("/work/end")
     public String endWork(Model model) {
         // 終了時間を登録
-        registService.registAttendance("12345", "WORK_END");
+        TimeEvent timeEvent = new TimeEvent();
+        timeEvent.setEmployeeId("12345");
+        timeEvent.setEventType("WORK_END");
+        registService.registAttendance(timeEvent);
+
         model.addAttribute("attendance", "勤務終了");
         return "attendance-done";
     }
@@ -38,7 +47,11 @@ public class AttendanceController {
     @PostMapping("/break/start")
     public String startBreak(Model model) {
         // 休憩開始時間を登録
-        registService.registAttendance("12345", "BREAK_START");
+        TimeEvent timeEvent = new TimeEvent();
+        timeEvent.setEmployeeId("12345");
+        timeEvent.setEventType("BREAK_START");
+        registService.registAttendance(timeEvent);
+
         model.addAttribute("attendance", "休憩開始");
         return "attendance-done";
     }
@@ -47,7 +60,11 @@ public class AttendanceController {
     @PostMapping("/break/end")
     public String endBreak(Model model) {
         // 休憩終了時間を登録
-        registService.registAttendance("12345", "BREAK_END");
+        TimeEvent timeEvent = new TimeEvent();
+        timeEvent.setEmployeeId("12345");
+        timeEvent.setEventType("BREAK_END");
+        registService.registAttendance(timeEvent);
+
         model.addAttribute("attendance", "休憩終了");
         return "attendance-done";
     }
