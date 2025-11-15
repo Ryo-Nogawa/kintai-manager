@@ -2,15 +2,13 @@ package com.kintai_manager.app.entity;
 
 import java.time.LocalDateTime;
 
-import org.springframework.data.annotation.Id;
 import org.springframework.data.relational.core.mapping.Table;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
-import jakarta.persistence.JoinColumn;
-import jakarta.persistence.ManyToOne;
+import jakarta.persistence.Id;
 import lombok.Data;
 
 @Entity
@@ -21,8 +19,7 @@ public class TimeEvent {
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long timeEventId;
 
-    @ManyToOne
-    @JoinColumn(name = "employee_id")
+    @Column(nullable = false, length = 5)
     private String employeeId;
 
     @Column(nullable = false, length = 12)
