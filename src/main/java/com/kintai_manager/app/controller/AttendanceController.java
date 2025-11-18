@@ -7,6 +7,7 @@ import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.kintai_manager.app.entity.TimeEvent;
+import com.kintai_manager.app.enums.EventType;
 import com.kintai_manager.app.form.EventTypeFormDto;
 import com.kintai_manager.app.service.RegistService;
 import com.kintai_manager.app.service.validation.EventTypeCheck;
@@ -40,7 +41,7 @@ public class AttendanceController {
         timeEvent.setEventType(eventTypeFormDto.getEventType());
         registService.registAttendance(timeEvent);
 
-        model.addAttribute("attendance", "勤務開始");
+        model.addAttribute("attendance", EventType.valueOf(eventTypeFormDto.getEventType()).getDisplayName());
         return "attendance-done";
     }
 }
