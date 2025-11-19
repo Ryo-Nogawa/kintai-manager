@@ -4,6 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 
+import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
@@ -18,7 +19,7 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
     private final JdbcTemplate jdbcTemplate;
 
     @Override
-    public void addTimeEvent(TimeEvent timeEvent) {
+    public void addTimeEvent(TimeEvent timeEvent) throws DataAccessException {
         String request_sql = "INSERT INTO time_event "
                 + " (employee_id, event_at, event_type, updated_at, updated_employee_id, created_at, created_employee_id) "
                 + " VALUES (?, DATE_FORMAT(NOW(), '%Y%m%d%H%i'), ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)";
@@ -30,7 +31,7 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
     }
 
     @Override
-    public List<TimeEvent> getTimeEvents(String employeeId, String targetMonth) {
+    public List<TimeEvent> getTimeEvents(String employeeId, String targetMonth) throws DataAccessException {
         // SQL文を作成
         String request_sql = ""
                 + "SELECT "
