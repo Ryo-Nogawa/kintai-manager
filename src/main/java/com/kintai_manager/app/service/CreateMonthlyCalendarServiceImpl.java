@@ -24,10 +24,11 @@ public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarSe
         DateTimeFormatter yearMonthDayFormat = DateTimeFormatter.ofPattern("uuuuMMdd");
         List<String> dayOfWeekList = new ArrayList<>();
         for (int i = 1; i <= endDate; i++) {
-            String endDateString = targetMonth + String.format("%02d", i);
-            LocalDate date = LocalDate.parse(endDateString, yearMonthDayFormat);
+            String dayString = String.format("%02d", i);
+            String yearMonthDayString = targetMonth + dayString;
+            LocalDate date = LocalDate.parse(yearMonthDayString, yearMonthDayFormat);
             String dayOfWeekJapanese = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.JAPANESE);
-            dayOfWeekList.add(dayOfWeekJapanese);
+            dayOfWeekList.add(dayString + "(" + dayOfWeekJapanese + ")");
         }
         monthlyCalendarResult.setDayOfWeekList(dayOfWeekList);
         return monthlyCalendarResult;
