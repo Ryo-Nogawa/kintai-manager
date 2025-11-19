@@ -13,7 +13,7 @@ public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarSe
         YearMonth yearMonth = YearMonth.parse(targetMonth, inputFormat);
 
         MonthlyCalendarResult monthlyCalendarResult = new MonthlyCalendarResult();
-        monthlyCalendarResult.setEndDate(yearMonth.atEndOfMonth().format(outputFormat));
+        monthlyCalendarResult.setEndDate(yearMonth.atEndOfMonth().getDayOfMonth());
         return monthlyCalendarResult;
     }
 }
