@@ -8,8 +8,11 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Locale;
 
+import org.springframework.stereotype.Service;
+
 import com.kintai_manager.app.dto.MonthlyCalendarResult;
 
+@Service
 public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarService {
     @Override
     public MonthlyCalendarResult createMonthlyCalendar(String targetMonth) {
