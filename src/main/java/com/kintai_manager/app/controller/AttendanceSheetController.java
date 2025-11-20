@@ -8,11 +8,18 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
+import com.kintai_manager.app.dto.MonthlyCalendarResult;
+import com.kintai_manager.app.service.CreateMonthlyCalendarService;
 import com.kintai_manager.app.service.validation.TargetMonthCheck;
 
+import lombok.RequiredArgsConstructor;
+
 @Controller
-@RequestMapping("/kintai_manager/attendance/sheet/")
+@RequestMapping("/kintai_manager/attendance/sheet")
+@RequiredArgsConstructor
 public class AttendanceSheetController {
+
+    private final CreateMonthlyCalendarService createMonthlyCalendarService;
 
     @GetMapping("show")
     public String attendanceSheetShow(@RequestParam String targetMonth, Model model) {
@@ -22,6 +29,9 @@ public class AttendanceSheetController {
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("不正な対象月です。入力値： " + targetMonth);
         }
+        MonthlyCalendarResult monthlyCalendarResult = createMonthlyCalendarService.createMonthlyCalendar(targetMonth);
+        model.addAttribute("endDate", monthlyCalendarResult.getEndDate());
+        model.addAttribute("dayOfWeekList", monthlyCalendarResult.getDayOfWeekList());
         return "attendance-sheet/show";
     }
 }
