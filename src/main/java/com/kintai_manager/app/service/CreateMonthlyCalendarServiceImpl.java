@@ -11,19 +11,32 @@ import java.util.Locale;
 import org.springframework.stereotype.Service;
 
 import com.kintai_manager.app.dto.MonthlyCalendarResult;
+import com.kintai_manager.app.entity.TimeEvent;
+import com.kintai_manager.app.repository.TimeEventRepository;
+
+import lombok.RequiredArgsConstructor;
 
 @Service
+@RequiredArgsConstructor
 public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarService {
-    @Override
-    public MonthlyCalendarResult createMonthlyCalendar(String targetMonth) {
+    private final TimeEventRepository timeEventRepository;
 
+    @Override
+    public MonthlyCalendarResult createMonthlyCalendar(String employeeId, String targetMonth) {
+
+        // 対象年月の勤怠情報を取得
+        List<TimeEvent> timeEvents = timeEventRepository.getTimeEvents(employeeId, targetMonth);
+        MonthlyCalendarResult monthlyCalendarResult = new MonthlyCalendarResult();
+        monthlyCalendarResult.setTimeEvents(timeEvents);
+
+        // 対象年月の最終日を取得
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("uuuuMM");
         YearMonth yearMonth = YearMonth.parse(targetMonth, inputFormat);
 
-        MonthlyCalendarResult monthlyCalendarResult = new MonthlyCalendarResult();
         int endDate = yearMonth.atEndOfMonth().getDayOfMonth();
         monthlyCalendarResult.setEndDate(endDate);
 
+        // 対象年月の日付と曜日を紐づけて、曜日リストを作成
         DateTimeFormatter yearMonthDayFormat = DateTimeFormatter.ofPattern("uuuuMMdd");
         List<String> dayOfWeekList = new ArrayList<>();
         for (int i = 1; i <= endDate; i++) {
