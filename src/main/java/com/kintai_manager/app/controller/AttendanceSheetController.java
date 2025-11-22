@@ -29,7 +29,9 @@ public class AttendanceSheetController {
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("不正な対象月です。入力値： " + targetMonth);
         }
-        MonthlyCalendarResult monthlyCalendarResult = createMonthlyCalendarService.createMonthlyCalendar(targetMonth);
+        MonthlyCalendarResult monthlyCalendarResult = createMonthlyCalendarService.createMonthlyCalendar("00000",
+                targetMonth);
+        model.addAttribute("timeEvents", monthlyCalendarResult.getTimeEvents());
         model.addAttribute("endDate", monthlyCalendarResult.getEndDate());
         model.addAttribute("dayOfWeekList", monthlyCalendarResult.getDayOfWeekList());
         return "attendance-sheet/show";
