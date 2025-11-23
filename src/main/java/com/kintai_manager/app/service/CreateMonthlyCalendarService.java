@@ -1,7 +1,9 @@
 package com.kintai_manager.app.service;
 
-import com.kintai_manager.app.dto.MonthlyCalendarResult;
+import java.util.List;
+
+import com.kintai_manager.app.dto.DailyAttendanceRecord;
 
 public interface CreateMonthlyCalendarService {
-    MonthlyCalendarResult createMonthlyCalendar(String employeeId, String targetMonth);
+    List<DailyAttendanceRecord> createMonthlyCalendar(String employeeId, String targetMonth);
 }
