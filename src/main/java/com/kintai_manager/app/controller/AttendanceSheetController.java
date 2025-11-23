@@ -1,6 +1,7 @@
 package com.kintai_manager.app.controller;
 
 import java.time.format.DateTimeParseException;
+import java.util.List;
 
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -8,7 +9,7 @@ import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 
-import com.kintai_manager.app.dto.MonthlyCalendarResult;
+import com.kintai_manager.app.dto.DailyAttendanceRecord;
 import com.kintai_manager.app.service.CreateMonthlyCalendarService;
 import com.kintai_manager.app.service.validation.TargetMonthCheck;
 
@@ -29,11 +30,9 @@ public class AttendanceSheetController {
         } catch (DateTimeParseException e) {
             throw new IllegalArgumentException("不正な対象月です。入力値： " + targetMonth);
         }
-        MonthlyCalendarResult monthlyCalendarResult = createMonthlyCalendarService.createMonthlyCalendar("00000",
-                targetMonth);
-        model.addAttribute("timeEvents", monthlyCalendarResult.getTimeEvents());
-        model.addAttribute("endDate", monthlyCalendarResult.getEndDate());
-        model.addAttribute("dayOfWeekList", monthlyCalendarResult.getDayOfWeekList());
+        List<DailyAttendanceRecord> DailyAttendanceRecordList = createMonthlyCalendarService.createMonthlyCalendar(
+                "00000", targetMonth);
+        model.addAttribute("dailyAttendanceRecordList", DailyAttendanceRecordList);
         return "attendance-sheet/show";
     }
 }
