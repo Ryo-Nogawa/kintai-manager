@@ -35,11 +35,12 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         // SQL文を作成
         String request_sql = ""
                 + "SELECT "
-                + "event_at, "
-                + "event_type "
+                + "event_type, "
+                + "SUBSTRING(event_at, 7, 2) as day, "
+                + "CONCAT(SUBSTRING(event_at, 9, 2), ':', SUBSTRING(event_at, 11, 2)) as event_time "
                 + "FROM time_event "
                 + "WHERE employee_id = ? "
-                + "AND event_at LIKE ?||'%' "
+                + "AND event_at LIKE CONCAT(?, '%') "
                 + "ORDER BY event_at;";
 
         // queryForListメソッドでSQL文を実行し、結果MapのListで受け取る
@@ -51,8 +52,9 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         // 受け取ったMapのListをfor文で回し、各勤怠データをTimeEventオブジェクトに格納
         for (Map<String, Object> timeEvent : timeEvents) {
             TimeEvent timeEventEntity = new TimeEvent();
-            timeEventEntity.setEventAt((String) timeEvent.get("event_at"));
-            timeEventEntity.setEventType((String) timeEvent.get("event_type"));
+            timeEventEntity.setEventType((String) timeEvent.get("event_type").toString());
+            timeEventEntity.setDay((String) timeEvent.get("day").toString());
+            timeEventEntity.setEventTime((String) timeEvent.get("event_time").toString());
             timeEventList.add(timeEventEntity);
         }
         return timeEventList;

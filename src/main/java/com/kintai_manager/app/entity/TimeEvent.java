@@ -46,4 +46,10 @@ public class TimeEvent {
     @Column(nullable = false, length = 5)
     private String createdEmployeeId;
 
+    @Column(nullable = false, length = 2)
+    private String day;
+
+    @Column(nullable = false, length = 5)
+    private String eventTime;
+
 }
