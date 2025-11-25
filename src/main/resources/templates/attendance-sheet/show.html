@@ -6,26 +6,43 @@
       th:replace="common :: header-fragment('Kintai Manager Attendance Sheet')"
     ></nav>
     <main class="container pt-5">
-      <table border="1">
-        <thead>
-          <tr>
-            <th>日付</th>
-            <th>勤務開始</th>
-            <th>勤務終了</th>
-            <th>休憩開始</th>
-            <th>休憩終了</th>
-          </tr>
-        </thead>
-        <tbody>
-          <tr th:each="dailyAttendanceRecord : ${dailyAttendanceRecordList}">
-            <td th:text="${dailyAttendanceRecord.dayOfWeekWithDate}"></td>
-            <td th:text="${dailyAttendanceRecord.workStartTime}"></td>
-            <td th:text="${dailyAttendanceRecord.workEndTime}"></td>
-            <td th:text="${dailyAttendanceRecord.breakStartTime}"></td>
-            <td th:text="${dailyAttendanceRecord.breakEndTime}"></td>
-          </tr>
-        </tbody>
-      </table>
+      <div class="mx-auto">
+        <table class="table table-striped table-hover">
+          <thead>
+            <tr>
+              <th scope="col" class="text-center">日付</th>
+              <th scope="col" class="text-center">勤務開始</th>
+              <th scope="col" class="text-center">勤務終了</th>
+              <th scope="col" class="text-center">休憩開始</th>
+              <th scope="col" class="text-center">休憩終了</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr th:each="dailyAttendanceRecord : ${dailyAttendanceRecordList}">
+              <td
+                class="text-center"
+                th:text="${dailyAttendanceRecord.dayOfWeekWithDate}"
+              ></td>
+              <td
+                class="text-center"
+                th:text="${dailyAttendanceRecord.workStartTime}"
+              ></td>
+              <td
+                class="text-center"
+                th:text="${dailyAttendanceRecord.workEndTime}"
+              ></td>
+              <td
+                class="text-center"
+                th:text="${dailyAttendanceRecord.breakStartTime}"
+              ></td>
+              <td
+                class="text-center"
+                th:text="${dailyAttendanceRecord.breakEndTime}"
+              ></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
       <div class="d-flex justify-content-center align-items-center mt-4">
         <form action="/kintai_manager/top" method="get">
           <button type="submit" class="btn btn-outline-dark">
