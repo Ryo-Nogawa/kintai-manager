@@ -6,29 +6,28 @@ import org.springframework.data.relational.core.mapping.Table;
 
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
-import jakarta.persistence.Id;
 import lombok.Data;
 
 @Entity
-@Table(name = "time_events")
+@Table(name = "time_event")
 @Data
 public class TimeEvent {
-    @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long timeEventId;
+    @Column(nullable = false, length = 8)
+    private String eventDay;
 
     @Column(nullable = false, length = 5)
     private String employeeId;
 
-    @Column(nullable = false, length = 12)
-    private String eventAt;
-
     @Column(nullable = false, length = 255)
     private String eventType;
 
-    @Column(nullable = false)
+    @Column(nullable = false, length = 1)
+    private Integer repeatNo;
+
+    @Column(nullable = false, length = 12)
+    private String eventAt;
+
+    @Column(nullable = false, length = 1)
     private Boolean isCorrection;
 
     @Column(length = 255)
@@ -45,11 +44,4 @@ public class TimeEvent {
 
     @Column(nullable = false, length = 5)
     private String createdEmployeeId;
-
-    @Column(nullable = false, length = 2)
-    private String day;
-
-    @Column(nullable = false, length = 5)
-    private String eventTime;
-
 }
