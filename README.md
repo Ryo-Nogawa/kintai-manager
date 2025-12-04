@@ -50,11 +50,6 @@ CREATE TABLE time_event (
 | IX_time_event_01 | NON_UNIQUE  | employee_id                                   | 外部キー   |
 
 ```sql
--- 主キー（PRIMARY KEY）
-ALTER TABLE time_event
-    ADD CONSTRAINT PK_time_event
-    PRIMARY KEY (event_day, employee_id, event_type, repeat_no);
-
 -- 非ユニークインデックス（外部キー用）
 CREATE INDEX IX_time_event_01
     ON time_event (employee_id);
