@@ -7,5 +7,5 @@ import com.kintai_manager.app.entity.TimeEvent;
 public interface TimeEventRepository {
     void addTimeEvent(TimeEvent timeEvent);
 
-    List<TimeEvent> getTimeEvents(String employeeId, String targetMonth);
+    List<TimeEvent> getTimeEvent(String employeeId, String targetMonth);
 }
