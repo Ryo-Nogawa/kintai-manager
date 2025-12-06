@@ -11,7 +11,7 @@ import java.util.Locale;
 import org.springframework.stereotype.Service;
 
 import com.kintai_manager.app.dto.DailyAttendanceRecord;
-import com.kintai_manager.app.entity.TimeEvent;
+import com.kintai_manager.app.dto.TimeEventResult;
 import com.kintai_manager.app.enums.EventType;
 import com.kintai_manager.app.repository.TimeEventRepository;
 
@@ -25,7 +25,7 @@ public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarSe
     @Override
     public List<DailyAttendanceRecord> createMonthlyCalendar(String employeeId, String targetMonth) {
         // 対象年月の勤怠情報を取得
-        List<TimeEvent> timeEvents = timeEventRepository.getTimeEvents(employeeId, targetMonth);
+        List<TimeEventResult> timeEvents = timeEventRepository.getTimeEvent(employeeId, targetMonth);
         // 対象年月の最終日を取得
         DateTimeFormatter inputFormat = DateTimeFormatter.ofPattern("uuuuMM");
         YearMonth yearMonth = YearMonth.parse(targetMonth, inputFormat);
@@ -42,7 +42,7 @@ public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarSe
             DailyAttendanceRecord dailyAttendanceRecord = new DailyAttendanceRecord();
             dailyAttendanceRecord.setDayOfWeekWithDate(dayString + "(" + dayOfWeekJapanese + ")");
 
-            for (TimeEvent timeEvent : timeEvents) {
+            for (TimeEventResult timeEvent : timeEvents) {
                 // 日付が一致する勤怠データを取得
                 if (timeEvent.getDay().equals(dayString)) {
                     // 勤怠データの種類によって、勤務開始時間、勤務終了時間、休憩開始時間、休憩終了時間を設定
@@ -53,7 +53,7 @@ public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarSe
                     } else if (timeEvent.getEventType().equals(EventType.BREAK_START.name())) {
                         dailyAttendanceRecord.setBreakStartTime(timeEvent.getEventTime());
                     } else if (timeEvent.getEventType().equals(EventType.BREAK_END.name())) {
-                        dailyAttendanceRecord.setBreakEndTime(timeEvent.getEventAt());
+                        dailyAttendanceRecord.setBreakEndTime(timeEvent.getEventTime());
                     }
                 }
             }

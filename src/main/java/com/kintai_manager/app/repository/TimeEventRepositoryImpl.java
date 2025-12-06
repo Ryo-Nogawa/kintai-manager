@@ -11,6 +11,7 @@ import org.springframework.dao.DataAccessException;
 import org.springframework.jdbc.core.JdbcTemplate;
 import org.springframework.stereotype.Repository;
 
+import com.kintai_manager.app.dto.TimeEventResult;
 import com.kintai_manager.app.entity.TimeEvent;
 import com.kintai_manager.app.enums.EventType;
 
@@ -33,8 +34,8 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         String check_same_event_sql = "SELECT COUNT(*) FROM time_event "
                 + "WHERE event_day = ? AND employee_id = ? AND event_type = ? ";
 
-        String employee_id = timeEvent.getEmployeeId();
-        String event_type = timeEvent.getEventType();
+        String employee_id = timeEvent.getPrimaryKey().getEmployeeId();
+        String event_type = timeEvent.getPrimaryKey().getEventType();
 
         // 現在日時取得
         LocalDateTime now = LocalDateTime.now();
@@ -71,27 +72,27 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
     }
 
     @Override
-    public List<TimeEvent> getTimeEvent(String employeeId, String targetMonth) throws DataAccessException {
+    public List<TimeEventResult> getTimeEvent(String employeeId, String targetMonth) throws DataAccessException {
         // SQL文を作成
         String request_sql = ""
                 + "SELECT "
                 + "event_type, "
-                + "SUBSTRING(event_at, 7, 2) as day, "
+                + "SUBSTRING(event_day, 7, 2) as day, "
                 + "CONCAT(SUBSTRING(event_at, 9, 2), ':', SUBSTRING(event_at, 11, 2)) as event_time "
                 + "FROM time_event "
                 + "WHERE employee_id = ? "
-                + "AND event_at LIKE CONCAT(?, '%') "
+                + "AND event_day LIKE CONCAT(?, '%') "
                 + "ORDER BY event_at;";
 
         // queryForListメソッドでSQL文を実行し、結果MapのListで受け取る
         List<Map<String, Object>> timeEvents = jdbcTemplate.queryForList(request_sql, employeeId, targetMonth);
 
         // TimeEvent格納用のList作成
-        List<TimeEvent> timeEventList = new ArrayList<>();
+        List<TimeEventResult> timeEventList = new ArrayList<>();
 
         // 受け取ったMapのListをfor文で回し、各勤怠データをTimeEventオブジェクトに格納
         for (Map<String, Object> timeEvent : timeEvents) {
-            TimeEvent timeEventEntity = new TimeEvent();
+            TimeEventResult timeEventEntity = new TimeEventResult();
             timeEventEntity.setEventType((String) timeEvent.get("event_type").toString());
             timeEventEntity.setDay((String) timeEvent.get("day").toString());
             timeEventEntity.setEventTime((String) timeEvent.get("event_time").toString());

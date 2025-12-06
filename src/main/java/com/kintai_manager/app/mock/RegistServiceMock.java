@@ -12,7 +12,7 @@ public class RegistServiceMock implements RegistService {
     @Override
     public void registAttendance(TimeEvent timeEvent) {
         System.out.println("--------------------------------");
-        System.out.println("employeeId: " + timeEvent.getEmployeeId() + " eventType: " + timeEvent.getEventType());
+        System.out.println("employeeId: " + timeEvent.getPrimaryKey().getEmployeeId() + " eventType: " + timeEvent.getPrimaryKey().getEventType());
         System.out.println("--------------------------------");
     }
 }
