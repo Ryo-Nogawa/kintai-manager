@@ -32,7 +32,7 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
     public void addTimeEvent(TimeEvent timeEvent) throws DataAccessException {
         // 同じ日時に同じ勤怠が存在するかチェック
         String check_same_event_sql = "SELECT COUNT(*) FROM time_event "
-                + "WHERE event_day = ? AND employee_id = ? AND event_type = ? ";
+                + "WHERE event_day = ? AND employee_id = ? AND event_type = ? For Update";
 
         String employee_id = timeEvent.getPrimaryKey().getEmployeeId();
         String event_type = timeEvent.getPrimaryKey().getEventType();
