@@ -42,6 +42,11 @@ CREATE TABLE time_event (
 );
 ```
 
+```sql
+ALTER TABLE time_event
+    MODIFY COLUMN is_correction TINYINT(1) NOT NULL DEFAULT 0;
+```
+
 ### time_event インデックス
 
 | インデックス名   | 種別        | カラム                                        | 用途／備考 |

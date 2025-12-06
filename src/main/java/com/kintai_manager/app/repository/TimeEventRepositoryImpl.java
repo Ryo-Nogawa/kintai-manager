@@ -61,12 +61,13 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         int sum_repeat_no = result_check_same_event + 1;
 
         String request_sql = "INSERT INTO time_event "
-                + " (employee_id, event_at, event_type, updated_at, updated_employee_id, created_at, created_employee_id) "
-                + " VALUES (?, DATE_FORMAT(NOW(), '%Y%m%d%H%i'), ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)";
+                + " (event_day, employee_id, event_type, repeat_no, event_at, updated_at, updated_employee_id, created_at, created_employee_id) "
+                + " VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)";
 
         // time_eventテーブルにデータを登録
-        jdbcTemplate.update(request_sql,
-                employee_id, timeEvent.getEventType(), employee_id, employee_id);
+        jdbcTemplate.update(
+                request_sql, today_datetime, employee_id, event_type, sum_repeat_no, now_datetime, employee_id,
+                employee_id);
     }
 
     @Override
