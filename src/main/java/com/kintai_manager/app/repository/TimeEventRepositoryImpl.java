@@ -48,13 +48,17 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
 
         if (event_type.equals(EventType.WORK_START.name()) || event_type.equals(EventType.WORK_END.name())) {
             if (result_check_same_event > kintaiEventWorkThreshold) {
-                throw new IllegalStateException("本日の" + event_type + "はすでに登録されています。" + "登録済み件数："
-                        + result_check_same_event + " 最大登録件数：" + kintaiEventWorkThreshold);
+                EventType eventType = EventType.valueOf(event_type);
+                String eventDisplayName = eventType.getDisplayName();
+                throw new IllegalStateException("本日の" + eventDisplayName + "はすでに登録されています。"
+                        + "登録済み件数：" + result_check_same_event);
             }
         } else if (event_type.equals(EventType.BREAK_START.name()) || event_type.equals(EventType.BREAK_END.name())) {
             if (result_check_same_event > kintaiEventBreakThreshold) {
-                throw new IllegalStateException("本日の" + event_type + "はすでに登録されています。" + "登録済み件数："
-                        + result_check_same_event + " 最大登録件数：" + kintaiEventBreakThreshold);
+                EventType eventType = EventType.valueOf(event_type);
+                String eventDisplayName = eventType.getDisplayName();
+                throw new IllegalStateException("本日の" + eventDisplayName + "はすでに登録されています。"
+                        + "登録済み件数：" + result_check_same_event);
             }
         }
 
