@@ -40,6 +40,7 @@ public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarSe
             LocalDate date = LocalDate.parse(yearMonthDayString, yearMonthDayFormat);
             String dayOfWeekJapanese = date.getDayOfWeek().getDisplayName(TextStyle.SHORT, Locale.JAPANESE);
             DailyAttendanceRecord dailyAttendanceRecord = new DailyAttendanceRecord();
+            dailyAttendanceRecord.setDate(dayString);
             dailyAttendanceRecord.setDayOfWeekWithDate(dayString + "(" + dayOfWeekJapanese + ")");
 
             for (TimeEventResult timeEvent : timeEvents) {
@@ -48,12 +49,16 @@ public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarSe
                     // 勤怠データの種類によって、勤務開始時間、勤務終了時間、休憩開始時間、休憩終了時間を設定
                     if (timeEvent.getEventType().equals(EventType.WORK_START.name())) {
                         dailyAttendanceRecord.setWorkStartTime(timeEvent.getEventTime());
+                        dailyAttendanceRecord.setRoundedWorkStartTime(timeEvent.getRoundedEventTime());
                     } else if (timeEvent.getEventType().equals(EventType.WORK_END.name())) {
                         dailyAttendanceRecord.setWorkEndTime(timeEvent.getEventTime());
+                        dailyAttendanceRecord.setRoundedWorkEndTime(timeEvent.getRoundedEventTime());
                     } else if (timeEvent.getEventType().equals(EventType.BREAK_START.name())) {
                         dailyAttendanceRecord.setBreakStartTime(timeEvent.getEventTime());
+                        dailyAttendanceRecord.setRoundedBreakStartTime(timeEvent.getRoundedEventTime());
                     } else if (timeEvent.getEventType().equals(EventType.BREAK_END.name())) {
                         dailyAttendanceRecord.setBreakEndTime(timeEvent.getEventTime());
+                        dailyAttendanceRecord.setRoundedBreakEndTime(timeEvent.getRoundedEventTime());
                     }
                 }
             }
