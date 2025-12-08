@@ -101,6 +101,7 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
                 + "event_type, "
                 + "SUBSTRING(event_day, 7, 2) as day, "
                 + "CONCAT(SUBSTRING(event_at, 9, 2), ':', SUBSTRING(event_at, 11, 2)) as event_time "
+                + "rounded_event_at, "
                 + "FROM time_event "
                 + "WHERE employee_id = ? "
                 + "AND event_day LIKE CONCAT(?, '%') "
@@ -115,9 +116,10 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         // 受け取ったMapのListをfor文で回し、各勤怠データをTimeEventオブジェクトに格納
         for (Map<String, Object> timeEvent : timeEvents) {
             TimeEventResult timeEventEntity = new TimeEventResult();
-            timeEventEntity.setEventType((String) timeEvent.get("event_type").toString());
-            timeEventEntity.setDay((String) timeEvent.get("day").toString());
-            timeEventEntity.setEventTime((String) timeEvent.get("event_time").toString());
+            timeEventEntity.setEventType(timeEvent.get("event_type").toString());
+            timeEventEntity.setDay(timeEvent.get("day").toString());
+            timeEventEntity.setEventTime(timeEvent.get("event_time").toString());
+            timeEventEntity.setRoundedEventTime(timeEvent.get("rounded_event_at").toString());
             timeEventList.add(timeEventEntity);
         }
         return timeEventList;
