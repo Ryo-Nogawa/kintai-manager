@@ -40,6 +40,18 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         // 現在日時取得
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMMddHHmm");
+
+        // 勤務実績計算用の丸め処理
+        int minute = now.getMinute();
+        int round_minute = 15;
+        if (event_type.equals(EventType.WORK_START.name()) || event_type.equals(EventType.BREAK_END.name())) {
+            minute = ((minute + round_minute - 1) / round_minute) * round_minute;
+        } else if (event_type.equals(EventType.WORK_END.name()) || event_type.equals(EventType.BREAK_START.name())) {
+            minute = (minute / round_minute) * round_minute;
+        }
+
+        System.out.println("勤怠種別：" + event_type + " minute：" + minute);
+
         String now_datetime = formatter.format(now);
         String today_datetime = now_datetime.substring(0, 8);
 
