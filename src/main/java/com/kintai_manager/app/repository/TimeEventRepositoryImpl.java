@@ -50,7 +50,7 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
             minute = (minute / round_minute) * round_minute;
         }
 
-        System.out.println("勤怠種別：" + event_type + " minute：" + minute);
+        String rounded_event_at = formatter.format(now.withMinute(minute));
 
         String now_datetime = formatter.format(now);
         String today_datetime = now_datetime.substring(0, 8);
@@ -78,13 +78,13 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         int sum_repeat_no = result_check_same_event + 1;
 
         String request_sql = "INSERT INTO time_event "
-                + " (event_day, employee_id, event_type, repeat_no, event_at, updated_at, updated_employee_id, created_at, created_employee_id) "
-                + " VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)";
+                + " (event_day, employee_id, event_type, repeat_no, event_at, updated_at, rounded_event_at,updated_employee_id, created_at, created_employee_id) "
+                + " VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)";
 
         // time_eventテーブルにデータを登録
         jdbcTemplate.update(
-                request_sql, today_datetime, employee_id, event_type, sum_repeat_no, now_datetime, employee_id,
-                employee_id);
+                request_sql, today_datetime, employee_id, event_type, sum_repeat_no, now_datetime, rounded_event_at,
+                employee_id, employee_id);
     }
 
     @Override
