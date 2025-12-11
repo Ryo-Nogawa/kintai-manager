@@ -103,7 +103,6 @@ public class CreateMonthlyCalendarServiceImpl implements CreateMonthlyCalendarSe
             }
 
             dailyAttendanceRecordList.add(dailyAttendanceRecord);
-            System.out.println("dailyAttendanceRecord: " + dailyAttendanceRecord);
         }
 
         return dailyAttendanceRecordList;
