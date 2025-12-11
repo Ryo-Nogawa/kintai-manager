@@ -5,7 +5,7 @@ import lombok.Data;
 @Data
 public class DailyAttendanceRecord {
     // 日付
-    private String date;
+    private int date;
 
     // 曜日付き日付
     private String dayOfWeekWithDate;
@@ -33,4 +33,7 @@ public class DailyAttendanceRecord {
 
     // 休憩終了時間（丸め処理後）
     private String roundedBreakEndTime;
+
+    // 実働時間
+    private String workingTime;
 }
