@@ -40,8 +40,26 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         // 現在日時取得
         LocalDateTime now = LocalDateTime.now();
         DateTimeFormatter formatter = DateTimeFormatter.ofPattern("uuuuMMddHHmm");
-        String now_datetime = formatter.format(now);
+
+        // 勤務実績計算用の丸め処理
+        int minute = now.getMinute();
+        int hour = now.getHour();
+        int round_minute = 15;
+        if (event_type.equals(EventType.WORK_START.name()) || event_type.equals(EventType.BREAK_END.name())) {
+            // 勤務開始または休憩終了の場合、切り上げ処理
+            minute = ((minute + round_minute - 1) / round_minute) * round_minute;
+            if (minute >= 60) {
+                minute = 0;
+                hour += 1;
+            }
+        } else if (event_type.equals(EventType.WORK_END.name()) || event_type.equals(EventType.BREAK_START.name())) {
+            // 勤務終了または休憩開始の場合、切り捨て処理
+            minute = (minute / round_minute) * round_minute;
+        }
+
+        String now_datetime = now.format(formatter);
         String today_datetime = now_datetime.substring(0, 8);
+        String rounded_event_at = today_datetime + String.format("%02d%02d", hour, minute);
 
         int result_check_same_event = jdbcTemplate.queryForObject(check_same_event_sql, Integer.class, today_datetime,
                 employee_id, event_type);
@@ -66,13 +84,13 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         int sum_repeat_no = result_check_same_event + 1;
 
         String request_sql = "INSERT INTO time_event "
-                + " (event_day, employee_id, event_type, repeat_no, event_at, updated_at, updated_employee_id, created_at, created_employee_id) "
-                + " VALUES (?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)";
+                + " (event_day, employee_id, event_type, repeat_no, event_at, rounded_event_at, updated_at, updated_employee_id, created_at, created_employee_id) "
+                + " VALUES (?, ?, ?, ?, ?, ?, CURRENT_TIMESTAMP, ?, CURRENT_TIMESTAMP, ?)";
 
         // time_eventテーブルにデータを登録
         jdbcTemplate.update(
-                request_sql, today_datetime, employee_id, event_type, sum_repeat_no, now_datetime, employee_id,
-                employee_id);
+                request_sql, today_datetime, employee_id, event_type, sum_repeat_no, now_datetime, rounded_event_at,
+                employee_id, employee_id);
     }
 
     @Override
@@ -82,7 +100,8 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
                 + "SELECT "
                 + "event_type, "
                 + "SUBSTRING(event_day, 7, 2) as day, "
-                + "CONCAT(SUBSTRING(event_at, 9, 2), ':', SUBSTRING(event_at, 11, 2)) as event_time "
+                + "CONCAT(SUBSTRING(event_at, 9, 2), ':', SUBSTRING(event_at, 11, 2)) as event_time, "
+                + "rounded_event_at "
                 + "FROM time_event "
                 + "WHERE employee_id = ? "
                 + "AND event_day LIKE CONCAT(?, '%') "
@@ -97,9 +116,10 @@ public class TimeEventRepositoryImpl implements TimeEventRepository {
         // 受け取ったMapのListをfor文で回し、各勤怠データをTimeEventオブジェクトに格納
         for (Map<String, Object> timeEvent : timeEvents) {
             TimeEventResult timeEventEntity = new TimeEventResult();
-            timeEventEntity.setEventType((String) timeEvent.get("event_type").toString());
-            timeEventEntity.setDay((String) timeEvent.get("day").toString());
-            timeEventEntity.setEventTime((String) timeEvent.get("event_time").toString());
+            timeEventEntity.setEventType(timeEvent.get("event_type").toString());
+            timeEventEntity.setDay(timeEvent.get("day").toString());
+            timeEventEntity.setEventTime(timeEvent.get("event_time").toString());
+            timeEventEntity.setRoundedEventTime(timeEvent.get("rounded_event_at").toString());
             timeEventList.add(timeEventEntity);
         }
         return timeEventList;

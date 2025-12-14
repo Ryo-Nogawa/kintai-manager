@@ -10,4 +10,6 @@ public class TimeEventResult {
     private String day;
     // 打刻日時
     private String eventTime;
+    // 丸め打刻日時
+    private String roundedEventTime;
 }
