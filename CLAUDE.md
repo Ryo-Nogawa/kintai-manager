@@ -4,7 +4,7 @@ This file provides guidance to Claude Code (claude.ai/code) when working with co
 
 ## プロジェクト概要
 
-Spring Boot 3.5.7を使用した勤怠管理システム（KintaiManager）。打刻データ（出勤・退勤・休憩開始・休憩終了）を管理し、月次勤怠表を生成する。
+Spring Boot 3.5.7 を使用した勤怠管理システム（KintaiManager）。打刻データ（出勤・退勤・休憩開始・休憩終了）を管理し、月次勤怠表を生成する。
 
 ## 技術スタック
 
@@ -20,6 +20,7 @@ Spring Boot 3.5.7を使用した勤怠管理システム（KintaiManager）。�
 ## 開発コマンド
 
 ### ビルドとテスト
+
 ```bash
 # プロジェクトのビルド
 ./mvnw clean package
@@ -35,7 +36,8 @@ Spring Boot 3.5.7を使用した勤怠管理システム（KintaiManager）。�
 ```
 
 ### 開発時の注意点
-- DB接続情報は`local.env`ファイルで管理（このファイルは絶対に開かないこと）
+
+- DB 接続情報は`local.env`ファイルで管理（このファイルは絶対に開かないこと）
 - `application.properties`では`${DB_URL}`, `${DB_USERNAME}`, `${DB_PASSWORD}`として環境変数を参照
 - アプリケーション起動時に`dotenv-java`が`local.env`を読み込み、システムプロパティに設定
 
@@ -43,7 +45,7 @@ Spring Boot 3.5.7を使用した勤怠管理システム（KintaiManager）。�
 
 ### レイヤ構成
 
-標準的なSpring MVCの3層アーキテクチャ:
+標準的な Spring MVC の 3 層アーキテクチャ:
 
 ```
 Controller → Service → Repository → DB
@@ -53,7 +55,7 @@ Controller → Service → Repository → DB
 
 ### パッケージ構成
 
-- `com.kintai_manager.app.controller`: HTTPリクエストのハンドリング
+- `com.kintai_manager.app.controller`: HTTP リクエストのハンドリング
   - `AttendanceController`: 打刻登録
   - `AttendanceSheetController`: 月次勤怠表
   - `TopPageController`: トップページ
@@ -63,12 +65,12 @@ Controller → Service → Repository → DB
   - `CreateMonthlyCalendarService`: 月次カレンダー生成
   - `service.validation`: カスタムバリデーション
 - `com.kintai_manager.app.repository`: データアクセス層
-  - Spring Data JPAとカスタムクエリを併用
-- `com.kintai_manager.app.entity`: JPAエンティティ
+  - Spring Data JPA とカスタムクエリを併用
+- `com.kintai_manager.app.entity`: JPA エンティティ
   - `TimeEvent`: 打刻イベントテーブル（複合主キー使用）
   - `TimeEventPrimaryKey`: 複合主キー（`@EmbeddedId`）
 - `com.kintai_manager.app.dto`: データ転送オブジェクト
-- `com.kintai_manager.app.form`: フォームバリデーション用DTO
+- `com.kintai_manager.app.form`: フォームバリデーション用 DTO
 - `com.kintai_manager.app.enums`: 列挙型（`EventType`等）
 - `com.kintai_manager.app.mock`: モック実装
 
@@ -77,21 +79,24 @@ Controller → Service → Repository → DB
 #### TimeEvent（打刻イベント）
 
 複合主キー構成:
-- `event_day` (CHAR(8)): イベント日（YYYYMMDD形式）
-- `employee_id` (CHAR(5)): 従業員ID
+
+- `event_day` (CHAR(8)): イベント日（YYYYMMDD 形式）
+- `employee_id` (CHAR(5)): 従業員 ID
 - `event_type` (VARCHAR): イベント種別（WORK_START, WORK_END, BREAK_START, BREAK_END）
 - `repeat_no` (INT): 繰り返し番号（同日同種別の複数打刻を許容）
 
 主要カラム:
-- `event_at` (CHAR(12)): 打刻時刻（元データ、YYYYMMDDHHmm形式）
+
+- `event_at` (CHAR(12)): 打刻時刻（元データ、YYYYMMDDHHmm 形式）
 - `rounded_event_at` (CHAR(12)): 丸め処理後の打刻時刻
 - `is_correction` (TINYINT): 修正フラグ
 - `reason` (VARCHAR): 理由
 - 監査フィールド: `created_at`, `created_employee_id`, `updated_at`, `updated_employee_id`
 
-#### EventType列挙型
+#### EventType 列挙型
 
 勤怠イベントの種別を定義:
+
 - `WORK_START`: 出勤
 - `WORK_END`: 退勤
 - `BREAK_START`: 休憩開始
@@ -107,14 +112,15 @@ Controller → Service → Repository → DB
 
 ### 設定ファイル
 
-- `application.properties`: Spring Boot設定
-  - DB接続情報（環境変数参照）
+- `application.properties`: Spring Boot 設定
+  - DB 接続情報（環境変数参照）
   - カスタムプロパティ: `kintai-event.work.threshold`, `kintai-event.break.threshold`（同一イベント種別の登録許容件数）
 
-### Lombokの使用
+### Lombok の使用
 
-プロジェクト全体でLombokを活用:
-- `@Data`: エンティティとDTO
-- `@RequiredArgsConstructor`: DIコンストラクタ（コントローラ、サービス）
+プロジェクト全体で Lombok を活用:
+
+- `@Data`: エンティティと DTO
+- `@RequiredArgsConstructor`: DI コンストラクタ（コントローラ、サービス）
 
 新規クラス作成時も同様のパターンを踏襲すること。
